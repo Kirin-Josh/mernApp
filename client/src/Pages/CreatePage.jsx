@@ -21,11 +21,11 @@ const CreatePage = () => {
   const toast = useToast();
 
   const handleClick = async () => {
-    const { success, message } = await createProduct(newProduct);
+    const { success } = await createProduct(newProduct);
     if (!success) {
       toast({
         title: "Error",
-        description: message,
+        description: "Failed to create product",
         status: "error",
         duration: "3000",
         isClosable: true
@@ -33,7 +33,7 @@ const CreatePage = () => {
     } else {
       toast({
         title: "Success",
-        description: message,
+        description: "product created successfully",
         status: "success",
         duration: "3000",
         isClosable: true
@@ -80,7 +80,7 @@ const CreatePage = () => {
                 setNewProduct({ ...newProduct, image: e.target.value })
               }
             />
-            <Button colorScheme="orange" w="full" onClick={handleClick}>
+            <Button bg="orange.400" w="full" onClick={handleClick}>
               Add Product
             </Button>
           </VStack>

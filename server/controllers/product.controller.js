@@ -4,6 +4,7 @@ import Product from "../models/product.model.js";
 export const getProducts = async (req, res) => {
     try {
         const products = await Product.find({});
+        res.status(200).json({ success: true, data: products });
     } catch (error) {
         console.error("error in fetching products:", error.message);
         res.status(500).json({ success: false, data: products });
@@ -11,6 +12,7 @@ export const getProducts = async (req, res) => {
 }
 
 export const addProducts = async (req, res) => {
+    console.log("Received product data:", req.body);
     const product = req.body; // user will send this data
 
     if (!product.name || !product.price || !product.image) {

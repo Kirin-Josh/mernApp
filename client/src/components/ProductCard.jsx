@@ -4,10 +4,12 @@ import {
   Heading,
   HStack,
   Image,
+  Input,
   Modal,
   ModalBody,
   ModalCloseButton,
   ModalContent,
+  ModalFooter,
   ModalHeader,
   ModalOverlay,
   Text,
@@ -49,12 +51,12 @@ const ProductCard = ({ product }) => {
   };
 
   const handleEditButton = async (pid, updatedProduct) => {
-    const { success, message } = await updateProduct(pid, updatedProduct);
+    const { success } = await updateProduct(pid, updatedProduct);
     onClose();
     if (!success) {
       toast({
         title: "Error",
-        description: message,
+        description: "Couldn't update product 😥",
         status: "error",
         duration: "3000",
         isClosable: true,
@@ -94,7 +96,7 @@ const ProductCard = ({ product }) => {
             <MdEditNote size={30} />
           </Button>
           <Button
-            onClick={() => handleDeleteButton(product.id)}
+            onClick={() => handleDeleteButton(product._id)}
             bg="red.400"
             _hover={{ bg: "red.500" }}
           >
@@ -113,7 +115,7 @@ const ProductCard = ({ product }) => {
               <Input
                 placeholder="Product Name"
                 name="name"
-                value={updateProduct.name}
+                value={updatedProduct.name}
                 onChange={(e) =>
                   setUpdateProduct({ ...updatedProduct, name: e.target.value })
                 }
@@ -122,7 +124,7 @@ const ProductCard = ({ product }) => {
                 placeholder="Price"
                 name="price"
                 type="number"
-                value={updateProduct.price}
+                value={updatedProduct.price}
                 onChange={(e) =>
                   setUpdateProduct({ ...updatedProduct, price: e.target.value })
                 }
@@ -130,30 +132,30 @@ const ProductCard = ({ product }) => {
               <Input
                 placeholder="Product Image"
                 name="image"
-                value={updateProduct.image}
+                value={updatedProduct.image}
                 onChange={(e) =>
                   setUpdateProduct({ ...updatedProduct, image: e.target.value })
                 }
               />
-              <HStack spacing={4}>
+            </VStack>
+                  </ModalBody>
+                  
+                   <ModalFooter>
                 <Button
-                  colorScheme="orange.400"
-                  w="full"
-                  onClick={() => handleEditButton(product.id, updatedProduct)}
+                  bg="orange.400"
+                  mr={3}
+                  onClick={() => handleEditButton(product._id, updatedProduct)}
                 >
                   Update
                 </Button>
                 <Button
                   variant={"ghost"}
-                  colorScheme="blue.400"
-                  w="full"
+                  _hover={{bg: "blue.400"}}
                   onClick={onClose}
                 >
                   Cancel
                 </Button>
-              </HStack>
-            </VStack>
-          </ModalBody>
+              </ModalFooter>
         </ModalContent>
       </Modal>
     </Box>

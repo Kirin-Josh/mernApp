@@ -10,7 +10,6 @@ export const useProductStore = create((set) => ({
         message: "Please fill in all fields ",
       };
     }
-    try {
       const res = await fetch("/api/products", {
         method: "POST",
         headers: {
@@ -19,17 +18,7 @@ export const useProductStore = create((set) => ({
         body: JSON.stringify(newProduct),
       });
 
-      if (!res.ok) {
-        // Check if the HTTP status is not 2xx
-        throw new Error(`HTTP error! Status: ${res.status}`);
-      }
-
       const data = await res.json();
-
-      // Ensure the response has the expected structure
-      if (!data.data) {
-        throw new Error("Invalid response format");
-      }
 
       set((state) => ({ products: [...state.products, data.data] }));
 
@@ -37,13 +26,6 @@ export const useProductStore = create((set) => ({
         success: true,
         message: "Product successfully added.",
       };
-    } catch (error) {
-      console.error("Failed to create product:", error);
-      return {
-        success: false,
-        message: error.message || "Failed to create product.",
-      };
-    }
   },
   fetchProducts: async () => {
     const res = await fetch("/api/products");
@@ -51,7 +33,6 @@ export const useProductStore = create((set) => ({
     set({ products: data.data });
   },
   deleteProduct: async (pid) => {
-    try {
       const res = await fetch(`/api/products/${pid}`, {
         method: "DELETE",
       });
@@ -59,20 +40,17 @@ export const useProductStore = create((set) => ({
       if (!data.success)
         return {
           success: true,
-          message: "Product deleted successfully.",
+          message: "Failed to delete product.",
         };
 
       // updates the ui immediately
       set((state) => ({
-        products: state.products.filter((product) => product.id !== pid),
+        products: state.products.filter((product) => product._id !== pid),
       }));
-    } catch (error) {
-      console.error("Failed to delete product:", error);
       return {
-        success: false,
-        message: error.message || "Failed to delete product.",
+        success: true,
+        message: "Product deleted successfully.",
       };
-    }
   },
   updateProduct: async (pid, updateProduct) => {
     const res = await fetch(`/api/products/${pid}`, {
@@ -92,11 +70,16 @@ export const useProductStore = create((set) => ({
     // once again updates the ui
     set((state) => ({
       products: state.products.map(
-      (product) => (
-        product.id === pid
-          ? data.data
-          : product
+        (product) => (
+          product._id === pid
+            ? data.data
+            : product
         ))
-    }))
+    }));
+
+    return {
+        success: true,
+        message: data.message,
+      };
   }
 }));

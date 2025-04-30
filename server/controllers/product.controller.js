@@ -10,7 +10,7 @@ export const getProducts = async (res, req) => {
     }
 }
 
-export const addProducts = async (res, req) => {
+export const addProducts = async (req, res) => {
     const product = req.body; // user will send this data
 
     if (!product.name || !product.price || !product.image) {
@@ -29,7 +29,7 @@ export const addProducts = async (res, req) => {
     }
 }
 
-export const editProducts = async (res, req) => {
+export const editProducts = async (req, res) => {
     const { id } = req.params
 
     const product = req.body;
@@ -45,7 +45,7 @@ export const editProducts = async (res, req) => {
     }
 }
 
-export const deleteProducts = async (res, req) => {
+export const deleteProducts = async (req, res) => {
     const { id } = req.params;
 
     if (!mongoose.Types.ObjectId.isValid(id)) {

@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import Product from "../models/product.model.js";
 
-export const getProducts = async (res, req) => {
+export const getProducts = async (req, res) => {
     try {
         const products = await Product.find({});
     } catch (error) {
